@@ -16,3 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::post('/micrositios/all','App\Http\Controllers\micrositiosController@getAll')->name('getAllMicrositios');
+Route::post('/micrositios/search','App\Http\Controllers\micrositiosController@search')->name('searchMicrositios');
+Route::post('/asesores/all','App\Http\Controllers\micrositiosAsesoresController@getAll')->name('getAllAsesores');

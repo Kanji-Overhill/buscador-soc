@@ -8,7 +8,7 @@
 					action="{{ URL::to('micrositios/search') }}"
 					method="post"
 					class="rounded p-9 bg-white-smoke shadow-sm ">
-					@csrf
+					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					<h4 class="text-primary text-center mb-3 font-bold">Ubica tu oficina</h4>
 
 

@@ -9,12 +9,12 @@
 				<label>Buscar por:</label>
 			</div>
 			<div class="relative px-2 md:w-1/5">
-				<img src="{{ URL::asset('img/favicon.png') }}" class="object-contain absolute w-6 h-full inset-y-0 left-4" alt="" />
+				<img src="{{ URL::asset('img/usuario.jpg') }}" class="object-contain absolute w-6 h-full inset-y-0 left-4" alt="" />
 				<input name="name" type="text" placeholder="Nombre del asesor" class="focus:outline-none w-full border border-gray-200 rounded pr-4 pl-10 py-2" />
 			</div>
 			<div class="relative px-2 md:w-1/5">
 				<div class="relative bg-white text-black border border-grey-200 rounded">
-					<img src="{{ URL::asset('img/favicon.png') }}" class="object-contain absolute w-6 h-full inset-y-0 left-2" alt="" />
+					<img src="{{ URL::asset('img/ubicacion.jpg') }}" class="object-contain absolute w-6 h-full inset-y-0 left-2" alt="" />
 					<span class="absolute z-0 w-8 inset-y-0 flex items-center justify-center right-0 text-gray-400"><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
 					<select name="state" class="relative z-10 bg-transparent appearance-none w-full h-10 pl-10 pr-8 text-gray-400 text-sm focus:outline-none">
 						<option class="bg-white text-black" selected hidden disabled>Estado</option>
@@ -55,7 +55,7 @@
 			</div>
 			<div class="relative px-2 md:w-1/5">
 				<div class="relative bg-white text-black border border-grey-200 rounded">
-					<img src="{{ URL::asset('img/favicon.png') }}" class="object-contain absolute w-6 h-full inset-y-0 left-2" alt="" />
+					<img src="{{ URL::asset('img/rueda.jpg') }}" class="object-contain absolute w-6 h-full inset-y-0 left-2" alt="" />
 					<span class="absolute z-0 w-8 inset-y-0 flex items-center justify-center right-0 text-gray-400"><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
 					<select name="products" class="relative z-10 bg-transparent appearance-none w-full h-10 pl-10 pr-8 text-gray-400 text-sm focus:outline-none">
 						<option class="bg-white text-black" selected hidden disabled>Asesor&iacute;a</option>
@@ -83,7 +83,7 @@
 			</div>
 			<div class="relative px-2 md:w-1/5">
 				<div class="relative bg-white text-black border border-grey-200 rounded">
-					<img src="{{ URL::asset('img/favicon.png') }}" class="object-contain absolute w-6 h-full inset-y-0 left-2" alt="" />
+					<img src="{{ URL::asset('img/rueda.jpg') }}" class="object-contain absolute w-6 h-full inset-y-0 left-2" alt="" />
 					<span class="absolute z-0 w-8 inset-y-0 flex items-center justify-center right-0 text-gray-400"><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
 					<select name="badge" class="relative z-10 bg-transparent appearance-none w-full h-10 pl-10 pr-8 text-gray-400 text-sm focus:outline-none">
 						<option class="bg-white text-black" selected hidden disabled>Certificaci&oacute;n</option>
@@ -109,7 +109,7 @@
 			<div id="search_query" class="inline-block"></div>
 		</div>
 
-		<div id="results" class="grid grid-cols-3 gap-8 mx-auto mt-10 mb-6 max-w-4xl">
+		<div id="results" class="grid lg:grid-cols-3 md:grid-cols-2 md:gap-8 gap-4 mx-auto mt-10 mb-6 max-w-4xl">
 		</div>
 
 		<div id="fail_results" class="mx-auto mt-10 max-w-4xl text-center">

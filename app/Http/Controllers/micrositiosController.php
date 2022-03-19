@@ -14,9 +14,13 @@ class micrositiosController extends Controller
 {
     public function ubica_oficina()
     {
-        $data['locations'] = json_encode([
-            ['location','19.4242185','-99.1693262']
-        ]);
+        $locations = UserAsesores::all();
+        foreach ($locations as $key => $value) {
+            if(!empty($value['lng']) && !empty($value['lat'])){
+                $data['locations'][] = [$value['name'],$value['lat'],$value['lng']];
+            }
+        }
+        $data['locations'] = json_encode($data['locations']);
         return view('offices',$data);
     }
 
@@ -35,7 +39,7 @@ class micrositiosController extends Controller
         $data['municipio'] = $request->city;
         $data['products'] = $request->products;
 
-        $data['micrositios'] = UserAsesores::when(!empty($data['state']), function ($query) use($data){
+        $micrositios = UserAsesores::when(!empty($data['state']), function ($query) use($data){
             return $query->where('direccion','like', '%'.$data['state'].'%');
         })
             ->when (!empty($data['municipio']) , function ($query) use($data){
@@ -45,6 +49,32 @@ class micrositiosController extends Controller
             return $query->where('products','like' ,'%'.$data['products'].'%');
         })
         ->get();
+
+        if(!empty($micrositios)){
+            foreach ($micrositios as $key => $value) {
+                if($value['certificacion'] == 'diamante'){
+                    $data['micrositios'][] = $value;
+                }
+            }
+
+            foreach ($micrositios as $key => $value) {
+                if($value['certificacion'] == 'oro'){
+                    $data['micrositios'][] = $value;
+                }
+            }
+
+            foreach ($micrositios as $key => $value) {
+                if($value['certificacion'] == 'plata'){
+                    $data['micrositios'][] = $value;
+                }
+            }
+
+            foreach ($micrositios as $key => $value) {
+                if($value['certificacion'] == '0' || empty($value['certificacion'])){
+                    $data['micrositios'][] = $value;
+                }
+            }
+        }
         // return $micrositios;
         return view('offices_results',$data);
     }

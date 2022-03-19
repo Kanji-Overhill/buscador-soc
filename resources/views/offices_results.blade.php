@@ -93,15 +93,44 @@
 		
 	</div>
 	<section class="bg-white-smoke">
-		<div class="container py-6 grid grid-cols-3 gap-8 mx-auto mt-10 mb-6 max-w-4xl">
+		<div class="container py-6 md:px-8 px-4 grid lg:grid-cols-4 md:grid-cols-2 gap-8 gap-4 mx-auto mt-10 mb-6">
 			@foreach($micrositios as $m => $micrositio)
 
-			<div class="border-2 rounded-md border-tertiary p-6 bg-white">
-				<h4 class="text-xl text-primary font-bold">{{ $micrositio['name'] }}</h4>
-				<span class="block">Asesor Hipotecario</span>
+			<div class="rounded-md {{ !empty($micrositio['certificacion']) && $micrositio['certificacion'] !== '0' ? 'border-2' : 'border' }} border-tertiary p-6 bg-white relative">
+				@if(!empty($micrositio['certificacion']) && $micrositio['certificacion'] !== '0')
+				<span class="absolute rounded-md inset-0 z-0 opacity-10 bg-tertiary"></span>
+				@endif
+				{{-- <h4 class="text-xl text-primary font-bold">{{ $micrositio['name'] }}</h4> --}}
+				<figure class="md:w-auto w-4/5 flex">
+					<img class="h-11 w-auto max-w-full object-contain mr-1 pl-1 border-l-px border-grey-200" src="{{ URL::asset('img/logo.png') }}" alt="{{ $micrositio['name'] }}" />
+					<span class="w-px bg-gray-300 block mx-1 flex-none"></span>
+					<span class="@php
+						$l = strlen($micrositio['name']);
+						if($l < 8){ echo 'text-2xl'; }
+						elseif($l < 12){ echo 'text-xl'; }
+						elseif($l < 18){ echo 'text-lg'; }
+						elseif($l >= 18){ echo 'text-sm'; }
+						@endphp
+						self-center text-primary font-bold leading-none ml-1">
+						{{ $micrositio['name'] }}
+					</span>
+				</figure>
+				<figure class="text-center my-4">
+					@if(!empty($micrositio['certificacion']) && $micrositio['certificacion'] != '0')
+					<img src="{{ URL::asset('img/'.strtolower($micrositio['certificacion']).'.png') }}" alt="" class="block mx-auto h-3 w-auto max-w-full">
+				@else
+					<span class="h-3 block"></span>
+				@endif	
+				</figure>
 
-				<span>
-					<i class="fa fa-map-marker-alt"></i> <span>{{ $micrositio['direccion'] }}</span>
+				<span class="flex items-start mb-4 text-sm">
+					<img src="{{ URL::asset('img/location@2x.png') }}" class="w-4 flex-none mr-2"> <span>{{ $micrositio['direccion'] }}</span>
+				</span>
+				<span class="flex items-start mb-4 text-sm">
+					<img src="{{ URL::asset('img/Grupo-25@2x.png') }}" class="w-4 flex-none mr-2"> <span>{{ $micrositio['telefono'] }}</span>
+				</span>
+				<span class="flex items-start mb-4 text-sm">
+					<img src="{{ URL::asset('img/vuesax-twotone-sms@2x.png') }}" class="w-4 flex-none mr-2"> <span>{{ $micrositio['email'] }}</span>
 				</span>
 
 				<div class="text-center">
@@ -112,4 +141,8 @@
 
 		</div>
 	</section>
+	@endsection
+
+	@section('scripts')
+	<script type="text/javascript" src="{{ URL::asset('js/states.js') }}"></script>
 	@endsection

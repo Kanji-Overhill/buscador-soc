@@ -1,6 +1,7 @@
 /*
  * Custom code goes here.
  */
+@import '../fonts/museo-sans/museo-sans.css';
 :root {
 	/* Colors: */
 	--primary-color: #015694;

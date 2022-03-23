@@ -33,16 +33,19 @@ var obj = {
     "Zacatecas": ["Apozol","Apulco","Atolinga","Benito Juarez","Calera","Canitas de Felipe Pescador","Chalchihuites","Concepcion del Oro","Cuauhtemoc","El Plateado de Joaquin Amaro","El Salvador","Fresnillo","Genaro Codina","General Enrique Estrada","General Francisco R. Murguia","General Panfilo Natera","Guadalupe","Huanusco","Jalpa","Jerez","Jimenez del Teul","Juan Aldama","Juchipila","Loreto","Luis Moya","Mazapil","Melchor Ocampo","Mezquital del Oro","Miguel Auza","Momax","Monte Escobedo","Morelos","Moyahua de Estrada","Nochistlan de Mejia","Noria de Angeles","Ojocaliente","Panuco","Pinos","Rio Grande","Sain Alto","Santa Maria de la Paz","Sombrerete","Susticacan","Tabasco","Tepechitlan","Tepetongo","Teul de Gonzalez Ortega","Tlaltenango de Sanchez Roman","Trancoso","Trinidad Garcia de la Cadena","Valparaiso","Vetagrande","Villa Garcia","Villa Gonzalez Ortega","Villa Hidalgo","Villa de Cos","Villanueva","Zacatecas"]
 }
 
-$('select[name="state"]').on('change',function(e) {
-	var value = $(this).val();
-		state = obj[value];
+$(window).on('load',load_data);
+$('select[name="state"]').on('change',load_data);
+function load_data() {
+	var value = $('select[name="state"]').val();
 
-	result = '<option class="bg-white text-black" hidden selected disabled>Municipio</option>';
+    if(value !== '' && value !== null){
+		var state = obj[value];
 
-	for (i = 0; i < state.length; i++) {
-		result += '<option class="bg-white text-black" value="'+state[i]+'">'+state[i]+'</option>'+"\n";
-	}	
-	
-	console.log(state.length);
-	$('[name="city"]').html(result);
-});
+    	result = '<option class="bg-white text-black" hidden selected disabled>Municipio</option>';
+
+    	for (i = 0; i < state.length; i++) {
+    		result += '<option class="bg-white text-black" value="'+state[i]+'">'+state[i]+'</option>'+"\n";
+    	}
+	   $('[name="city"]').html(result);
+    }
+}

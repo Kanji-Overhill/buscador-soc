@@ -17,10 +17,17 @@ class micrositiosController extends Controller
         $locations = UserAsesores::all();
         foreach ($locations as $key => $value) {
             if(!empty($value['lng']) && !empty($value['lat'])){
-                $data['locations'][] = [$value['name'],$value['lat'],$value['lng']];
+                $icons = [
+                    'diamante' => 'icon-diamante.png',
+                    'oro' => 'icon-oro.png',
+                    'plata' => 'icon-plata.png',
+                ];
+                $data['locations'][] = [$value['name'],$value['lat'],$value['lng'],isset($icons[strtolower($value['certificacion'])]) ? $icons[strtolower($value['certificacion'])] : 'icon-soc.png'];
             }
         }
         $data['locations'] = json_encode($data['locations']);
+        $data['states'] = [
+            "Aguascalientes"=>"Aguascalientes","Baja California"=>"Baja California","Baja California Sur"=>"Baja California Sur","Campeche"=>"Campeche","Chiapas"=>"Chiapas","Chihuahua"=>"Chihuahua","Ciudad de Mexico"=>"Ciudad de México","Coahuila"=>"Coahuila","Colima"=>"Colima","Durango"=>"Durango ","Estado de Mexico"=>"Estado de México","Guanajuato"=>"Guanajuato","Guerrero"=>"Guerrero","Hidalgo"=>"Hidalgo","Jalisco"=>"Jalisco","Michoacan"=>"Michoacán","Morelos"=>"Morelos","Nayarit"=>"Nayarit","Nuevo Leon"=>"Nuevo León","Oaxaca"=>"Oaxaca","Puebla"=>"Puebla","Queretaro"=>"Querétaro","Quintana Roo"=>"Quintana Roo","San Luis Potosi"=>"San Luis Potosí","Sinaloa"=>"Sinaloa","Sonora"=>"Sonora","Tabasco"=>"Tabasco","Tamaulipas"=>"Tamaulipas","Tlaxcala"=>"Tlaxcala","Veracruz"=>"Veracruz","Yucatan"=>"Yucatán","Zacatecas"=>"Zacatecas"];
         return view('offices',$data);
     }
 
@@ -50,6 +57,8 @@ class micrositiosController extends Controller
         })
         ->get();
 
+        $data['micrositios'] = [];
+
         if(!empty($micrositios)){
             foreach ($micrositios as $key => $value) {
                 if($value['certificacion'] == 'diamante'){
@@ -76,6 +85,9 @@ class micrositiosController extends Controller
             }
         }
         // return $micrositios;
+        $data['states'] = [
+            "Aguascalientes"=>"Aguascalientes","Baja California"=>"Baja California","Baja California Sur"=>"Baja California Sur","Campeche"=>"Campeche","Chiapas"=>"Chiapas","Chihuahua"=>"Chihuahua","Ciudad de Mexico"=>"Ciudad de México","Coahuila"=>"Coahuila","Colima"=>"Colima","Durango"=>"Durango ","Estado de Mexico"=>"Estado de México","Guanajuato"=>"Guanajuato","Guerrero"=>"Guerrero","Hidalgo"=>"Hidalgo","Jalisco"=>"Jalisco","Michoacan"=>"Michoacán","Morelos"=>"Morelos","Nayarit"=>"Nayarit","Nuevo Leon"=>"Nuevo León","Oaxaca"=>"Oaxaca","Puebla"=>"Puebla","Queretaro"=>"Querétaro","Quintana Roo"=>"Quintana Roo","San Luis Potosi"=>"San Luis Potosí","Sinaloa"=>"Sinaloa","Sonora"=>"Sonora","Tabasco"=>"Tabasco","Tamaulipas"=>"Tamaulipas","Tlaxcala"=>"Tlaxcala","Veracruz"=>"Veracruz","Yucatan"=>"Yucatán","Zacatecas"=>"Zacatecas"];
+
         return view('offices_results',$data);
     }
 }

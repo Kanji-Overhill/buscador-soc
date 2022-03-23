@@ -8,11 +8,11 @@
 			<div class="relative px-2 flex-none">
 				<label>Buscar por:</label>
 			</div>
-			<div class="relative px-2 md:w-1/5">
+			<div class="relative px-2 md:mb-0 mb-4 md:w-2/5">
 				<img src="{{ URL::asset('img/usuario.jpg') }}" class="object-contain absolute w-6 h-full inset-y-0 left-4" alt="" />
 				<input name="name" type="text" placeholder="Nombre del asesor" class="focus:outline-none w-full border border-gray-200 rounded pr-4 pl-10 py-2" />
 			</div>
-			<div class="relative px-2 md:w-1/5">
+			<div class="relative px-2 md:mb-0 mb-4 md:w-1/5">
 				<div class="relative bg-white text-black border border-grey-200 rounded">
 					<img src="{{ URL::asset('img/ubicacion.jpg') }}" class="object-contain absolute w-6 h-full inset-y-0 left-2" alt="" />
 					<span class="absolute z-0 w-8 inset-y-0 flex items-center justify-center right-0 text-gray-400"><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
@@ -53,12 +53,15 @@
 					</select>
 				</div>
 			</div>
-			<div class="relative px-2 md:w-1/5">
+			<div class="relative px-2 md:mb-0 mb-4 md:w-1/5">
 				<div class="relative bg-white text-black border border-grey-200 rounded">
 					<img src="{{ URL::asset('img/rueda.jpg') }}" class="object-contain absolute w-6 h-full inset-y-0 left-2" alt="" />
 					<span class="absolute z-0 w-8 inset-y-0 flex items-center justify-center right-0 text-gray-400"><i class="fa fa-chevron-down" aria-hidden="true"></i></span>
 					<select name="products" class="relative z-10 bg-transparent appearance-none w-full h-10 pl-10 pr-8 text-gray-400 text-sm focus:outline-none">
 						<option class="bg-white text-black" selected hidden disabled>Asesor&iacute;a</option>
+						<option class="bg-white text-black" value="Hipotecario">Hipotecario</option>
+						<option class="bg-white text-black" value="Empresarial">Empresarial</option>
+						{{-- 
 						<optgroup label="Hipotecario">
 							<option class="bg-white text-black" value="Asesoría Hipotecaria">Asesoría Hipotecaria</option>
 							<option class="bg-white text-black" value="Adquisición de vivienda">Adquisición de vivienda</option>
@@ -78,9 +81,11 @@
 							<option class="bg-white text-black" value="Crédito Revolvente">Crédito Revolvente</option>
 							<option class="bg-white text-black" value="Crédito Arrendamiento">Crédito Arrendamiento</option>
 						</optgroup>
+						--}}
 					</select>
 				</div>
 			</div>
+			{{--
 			<div class="relative px-2 md:w-1/5">
 				<div class="relative bg-white text-black border border-grey-200 rounded">
 					<img src="{{ URL::asset('img/rueda.jpg') }}" class="object-contain absolute w-6 h-full inset-y-0 left-2" alt="" />
@@ -99,12 +104,13 @@
 					</select>
 				</div>
 			</div>
+			--}}
 			<div class="relative px-2 md:w-1/5">
 				<button type="submit" class="text-white bg-tertiary px-10 py-2 w-full rounded-md" >Buscar</button>
 			</div>
 		</form>
 
-		<div class="px-2 my-10">
+		<div class="px-2 my-10 hidden" id="keywords">
 			<span class="inline-block">B&uacute;squeda</span>
 			<div id="search_query" class="inline-block"></div>
 		</div>
@@ -118,11 +124,13 @@
 
 		<div class="hidden" id="sketch">
 			<div class="border-2 rounded-md border-tertiary p-6 bg-white">
-				<h4 class="text-xl text-primary font-bold" id="user_name">Juan Hernandez</h4>
-				<span class="block">Asesor Hipotecario</span>
+				<h4 class="text-xl text-primary font-bold text-center" id="user_name"></h4>
+				<span class="block font-light text-center">Asesor Hipotecario</span>
 
-				<span>
-					<i class="fa fa-map-marker-alt"></i> <span id="user_address">Puebla</span>
+				<figure class="badge-image"><img /></figure>
+
+				<span class="flex items-start">
+					<i class="fa fa-map-marker-alt flex-none mr-2 mt-1"></i> <span id="user_address"></span>
 				</span>
 
 				<div class="text-center">
@@ -133,7 +141,7 @@
 		<div id="query_items" class="hidden">
 			<div class="px-3 py-1 rounded relative inline-block border border-primary">
 				<div class="absolute inset-0 opacity-50 bg-primary"></div>
-				<span class="relative z-10" id="value"></span>
+				<span class="relative z-10 value-item"></span>
 				<span class="click-item cursor-pointer ml-2 relative z-10"><i class="far fa-times-circle"></i></span>
 			</div>
 		</div>
@@ -147,6 +155,20 @@
 	$(document).ready(function() {
 		$('body').css('background-image','url(\'{{ URL::asset('img/fondo.jpg') }}\')')
 	});
+	$('body').on('click','.click-item',function(e) {
+		e.stopPropagation();
+		var name = $(this).prev().data('name');
+
+		if(name == 'name'){
+			$('[name="'+ name +'"]').val('');
+		} else{
+			$('[name="'+ name +'"]').find("option:selected").prop("selected", false);
+			$('[name="'+ name +'"]').find("option:first-child").prop("selected", true);
+		}
+
+		$(this).parent().remove();
+		$('form').submit();
+	});
 	$('form').submit(function(e) {
 		e.preventDefault();
 		$.ajax({
@@ -156,34 +178,44 @@
             dataType: 'json',
 		    beforeSend: function() {
 		    	$('.loader').addClass('loading');
+		    	$('#keywords').addClass('hidden');
 		    	$('#results').html('');
 		    	$('#fail_results').html('');
 		    	$('#search_query').html('');
 		    },
             success: function (res) {
-            	var values = [
-            		$('[name="name"]').val(),
-            		$('[name="state"]').val(),
-            		$('[name="products"]').val(),
-            		$('[name="badge"]').val(),
-            	];
-            	for (var i = 0; i < values.length; i++) {
-            		if(values[i] !== '' && values[i] !== null){
-	            		$('#value').html(values[i]);
+            	var values = {
+            		'name': $('[name="name"]').val(),
+            		'state': $('[name="state"]').val(),
+            		'products': $('[name="products"]').val(),
+            		// 'badge': $('[name="badge"]').val(),
+            	}
+
+            	Object.keys(values).forEach(function(key) {
+            		if(values[key] !== '' && values[key] !== null){
+		    			
+		    			$('#keywords').removeClass('hidden');
+
+	            		$('#query_items .value-item').attr('data-name',key).html(values[key]);
 	            		$('#search_query').append($('#query_items').html());
             		}
-            	}
-            	console.log(res.suggest);
+            	});
+
             	if(res.asesores !== undefined && res.asesores !== null && res.asesores !== ""){
             		for (var i = 0; i < res.asesores.length; i++) {
             			$('#user_name').html(res.asesores[i]['name']);
             			$('#user_address').html(res.asesores[i]['direccion']);
-            			$('#user_link').attr('href',res.asesores[i]['url']);
+            			if(res.asesores[i]['badge']){
+            				$('.badge-image').attr('src','{{ URL::asset('img') }}/' + res.asesores[i]['badge'] + '.png').attr('alt',res.asesores[i]['badge']);
+            			} else{
+            				$('.badge-image').removeAttr('src').removeAttr('alt');
+            			}
+            			$('#user_link').attr('href','{{ config('constants.base_link') }}' + res.asesores[i]['url']);
 		    			$('#results').append($('#sketch').html());
             		}
             	}
             	if(res.suggest !== undefined && res.suggest !== null && res.suggest !== ""){
-        			$('#fail_results').html('<h4 class="mb-4">No se encontró ningún resultados</h4>');
+        			$('#fail_results').html('<h4 class="mb-4">No se encontró ningún resultado</h4>');
 	    			$('#fail_results').append('<p class="mb-4">Quiz&aacute; quisiste decir:</p>');
 	    			$('#fail_results').append('<ul></ul>');
             		for (var x = 0; x < res.suggest.length; x++) {
